@@ -1,0 +1,1 @@
+module adi mybasicmodule altinda ayni isimli php dosyasi (mybasicmodule.php)
