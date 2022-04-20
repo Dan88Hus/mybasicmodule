@@ -1,1 +1,10 @@
 module adi mybasicmodule altinda ayni isimli php dosyasi (mybasicmodule.php)
+
+module and hook has a many2many relation, as many hooks can be dispalyed on render page
+Design-Positions sekmesi bize hooklari listeler
+
+widgets are extending hooks feature, its like state management to show variables in everywhere of application
+instead of only one hook as hookdisplayFooter, even not configured for trasparent hook configured
+first implement interface(renderWidget, getWidgetVariable()), then hook-old way Hook::exec or smarty way {hook= 'hook_name'}
+
+

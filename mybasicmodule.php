@@ -25,6 +25,7 @@
  */
 
 use PhpParser\Node\Expr\Cast\Bool_;
+use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 // checking if presto hop installed correctly
 if(!defined('_PS_VERSION_')){
@@ -32,7 +33,7 @@ if(!defined('_PS_VERSION_')){
 }
 
 // the main class
-class MyBasicModule extends Module{
+class MyBasicModule extends Module implements WidgetInterface{
 
     //constructor
     public function __construct(){
@@ -75,5 +76,41 @@ class MyBasicModule extends Module{
             //sql query that create certain table
             return true;
         }
-    
+
+        //our own hook 
+        // public function hookdisplayFooter($params){
+        //     $this->context->smarty->assign([
+        //         "myparamtest" => "Huseyin Ozdogan",
+        //         "idcart" => $this->context->cart->id
+        //     ]); // boylelikle template e 
+        //     // return "Hello world from the basic module hook";
+        //     return $this->display(__FILE__, 'views/templates/hook/footeR.tpl');
+
+        // }
+
+        // bu hook u install methodunda da cagirabiliriz veya manuel olarak positions lardan da atama yapabiliriz
+        // Design- positions- transparant module sekmesinden
+        //arkasindan store webpage footer da gorunuyor
+        // bu hook legacyHook oldugu icin overriding yaptik ve kendi direk sayfada footer oldugunu buldu 
+        // customHook ta yapacagiz template icin 
+        //custom hook icin views/templates/hook klasorleri olustur altinda .tpl dosyasi
+        // return $this->display(__FILE, filePath) de yapabiliriz
+        // veya $this->fetch($this->templateFile,$this->getCacheId()) de yapabiilriz
+
+        // WidgetImplements ettigimiz icin override yapilacak methodlar var
+        // public function renderWidget($hookName, array $configuration){
+        //     return $this->fetch($this->templateFile, $this->getCacheId('blockassurance'));
+        // }
+
+        public function renderWidget($hookName, array $configuration){
+            $this->context->smarty->assign($this->getWidgetVariables($hookName, $configuration));
+            return $this->fetch('module:mybasicmodule/views/templates/hook/footeR.tpl');
+        }
+
+        public function getWidgetVariables($hookName, array $configuration){
+            return [
+                'myparamtest' => "from getWidgetVariables"
+            ];
+            // parametleri render widgeta yazmayi unutma
+        }
 }
