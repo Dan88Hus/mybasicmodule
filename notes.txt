@@ -7,4 +7,17 @@ widgets are extending hooks feature, its like state management to show variables
 instead of only one hook as hookdisplayFooter, even not configured for trasparent hook configured
 first implement interface(renderWidget, getWidgetVariable()), then hook-old way Hook::exec or smarty way {hook= 'hook_name'}
 
+to create configuration page for our module:
+getContent() yazinca otomatik algiliyor
+.tpl for configuration page:
+    we will use prestashop UI kit
+    first create template , then helper /templates/admin/configuration.tpl
+
+
+back end den front end e gidiyor simdiye kadar yaptiklarimiz
+
+form submittion icin , handler ekliyecez
+Tools::getValue(variableNameFromEndField) , it gets value from form method post or get 
+using helperForm for, bir onceki getContent i comment ettik
+
 

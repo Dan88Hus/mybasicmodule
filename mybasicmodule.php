@@ -113,4 +113,25 @@ class MyBasicModule extends Module implements WidgetInterface{
             ];
             // parametleri render widgeta yazmayi unutma
         }
-}
+        
+        /* public function getContent(){
+            $message = null;
+            if(Tools::getValue("courserating")){
+                Configuration::updateValue('COURSE_RATING',Tools::getValue("courserating"));
+                $message = "form saved correctly";
+            }
+            // return "This is the configuration page";
+            //suppose we have field for COURSE_RATING
+            $courseRating = Configuration::get('COURSE_RATING');
+            $this->context->smarty->assign([
+                'courserating' => $courseRating,
+                'message' => $message
+            ]);
+            return $this->fetch('module:mybasicmodule/views/templates/admin/configuration.tpl');
+
+        } */
+        
+
+
+
+}// belongs to class
