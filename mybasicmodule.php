@@ -130,8 +130,74 @@ class MyBasicModule extends Module implements WidgetInterface{
             return $this->fetch('module:mybasicmodule/views/templates/admin/configuration.tpl');
 
         } */
-        
+        public function getContent(){
+            $message = "";
+            if(Tools::isSubmit('submit'. $this->name)){ // 'submit'. $this->name = helperdeki submit_action
+                $courseRating = Tools::getValue('courserating');
+                if($courseRating && !empty($courseRating) && Validate::isGenericName($courseRating)){
+                    Configuration::updateValue('COURSE_RATING',Tools::getValue("courserating"));
+                    $message .= $this->displayConfirmation($this->trans('Form submitted successfully'));
+                } else{
+                    $message .= $this->displayError($this->trans('Form NOT submitted successfully'));
 
+                }
+            }
 
+            //dispalyForm is an existing method that we will create
+            return $message . $this->displayForm();
+        }
+        public function displayForm(){
+            $defaulltLang = (int) Configuration::get('PS_LANG_DEFAULT');
+
+            //form inputs field
+            $fields[0]['form'] = [
+                'legend' => [
+                    'title' => $this->trans('Rating setting')
+                ],
+                'input' => [
+                    [
+
+                        'type' => 'text',
+                        'label' => $this->l('Course rating'),
+                        'name' => 'courserating', // name tpl de ki name ile ayni olmali
+                        'size' => 20,
+                        'required' => true
+                    ]
+                    ],
+                    'submit' => [
+                        'title' => $this->trans('Save the rating'),
+                        'class' => 'btn btn-primary pull-right'
+                    ]
+                ];
+                //instance of the Form Helper
+                $helper = new HelperForm();
+                $helper->module = $this;
+                $helper->name_controller = $this->name;
+                $helper->token = Tools::getAdminTokenLite('AdminModules');
+                $helper->currentIndex = AdminController::$currentIndex . '&configure=' . $this->name;
+
+                //language
+                $helper->default_form_language = $defaulltLang;
+                $helper->allow_employee_form_lang = $defaulltLang;
+                //Title and toolbar
+                $helper->title = $this->displayName; // false -> remove Toolbar
+                $helper->show_toolbar = true; // yes -> Toolbar is always visible on the top of the screen
+                $helper->submit_action = 'submit' . $this->name;
+                $helper->toolbar_btn = [
+                    'save' => [
+                        'desc' => $this->l('save'),
+                        'href' => AdminController::$currentIndex . '&configure=' . $this->name . '&save' . $this->name .
+                            '&token=' . Tools::getAdminTokenLite('AdminModules'),
+                    ],
+                    'back' => [ 
+                        'href' => AdminController::$currentIndex . '&token=' . Tools::getAdminTokenLite('AdminModules'),
+                        'desc' => $this->l('Back to list'),
+                    ]
+                    ];
+                $helper->fields_value['courserating'] = Configuration::get('COURSE_RATING');
+                    return $helper->generateForm($fields);
+        }
+
+        // save yapmiyor cunku logic yok bunun icin getContentMethodu kullanacaz if(Tools::isSubmit())
 
 }// belongs to class
