@@ -20,4 +20,23 @@ form submittion icin , handler ekliyecez
 Tools::getValue(variableNameFromEndField) , it gets value from form method post or get 
 using helperForm for, bir onceki getContent i comment ettik
 
+controllers: 
+    2 types of controllers  
+        front controllers
+            native controllers 
+            Module controller 
+            controllers/front/test.php
+        Admin Controllers or Backend controllers 
+            Native Controllers 
+            Module Controllers 
+postProcess 
+    init()
+    setMedia() setMobileMedia()
+    postProcess()
+    initHeader()
+    initContent()
+    initFooter()
+    display() or displayAjax() methodlari 
 
+-front controller icin linkClass moduleLink method ile de href olusturabiliriz
+-module router da kullana biliriz

@@ -62,7 +62,7 @@ class MyBasicModule extends Module implements WidgetInterface{
     public function install()
     {
         //we can add any method on this overriding like dbInstall
-        return parent::install() && $this->registerHook('registerGDPRConsent') && $this->dbInstall();
+        return parent::install() && $this->registerHook('registerGDPRConsent') && $this->registerHook('moduleRoutes') && $this->dbInstall() ;
     }
 
         //uninstall method, this is overriding method, the extended class has this method
@@ -103,6 +103,8 @@ class MyBasicModule extends Module implements WidgetInterface{
         // }
 
         public function renderWidget($hookName, array $configuration){
+            // link icin 
+            // echo $this->context->link->getModuleLink($this->name,"test"); //burasi test controlerina yonlendiriyor 
             $this->context->smarty->assign($this->getWidgetVariables($hookName, $configuration));
             return $this->fetch('module:mybasicmodule/views/templates/hook/footeR.tpl');
         }
@@ -199,5 +201,19 @@ class MyBasicModule extends Module implements WidgetInterface{
         }
 
         // save yapmiyor cunku logic yok bunun icin getContentMethodu kullanacaz if(Tools::isSubmit())
-
+    // overriding
+        public function hookModuleRoutes($params){
+        return [
+            'test' => [
+                'controller' => 'test',
+                'rule' => "fc-test",
+                'keywords' => [],
+                'params' => [
+                   'module' => $this->name,
+                    'fc' => 'module',
+                    'controller' => 'test'
+                ]
+            ]
+        ];
+    }
 }// belongs to class
