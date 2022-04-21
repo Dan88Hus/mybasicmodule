@@ -40,3 +40,7 @@ postProcess
 
 -front controller icin linkClass moduleLink method ile de href olusturabiliriz
 -module router da kullana biliriz
+
+legacy admin controller must be under modules/your_module/controllers/admin 
+    main idea is to structure certain db table 
+

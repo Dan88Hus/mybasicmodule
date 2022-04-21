@@ -25,6 +25,7 @@
  */
 
 use PhpParser\Node\Expr\Cast\Bool_;
+use PhpParser\Node\Stmt\TryCatch;
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 // checking if presto hop installed correctly
@@ -62,14 +63,24 @@ class MyBasicModule extends Module implements WidgetInterface{
     public function install()
     {
         //we can add any method on this overriding like dbInstall
-        return parent::install() && $this->registerHook('registerGDPRConsent') && $this->registerHook('moduleRoutes') && $this->dbInstall() ;
+        return parent::install() &&
+        // $this->sqlInstall() &&
+        $this->installtab() &&
+        $this->registerHook('registerGDPRConsent') &&
+        $this->registerHook('moduleRoutes')
+        //  && 
+        // $this->dbInstall()
+        ;
     }
 
         //uninstall method, this is overriding method, the extended class has this method
         public function uninstall()
         {
-            return parent::uninstall();
-        }
+            return parent::uninstall() 
+            // && $this->sqlUninstall() 
+            && $this->uninstalltab()
+            ;
+        } 
 
         //install sql, this method is our own
         public function dbInstall(){
@@ -202,18 +213,66 @@ class MyBasicModule extends Module implements WidgetInterface{
 
         // save yapmiyor cunku logic yok bunun icin getContentMethodu kullanacaz if(Tools::isSubmit())
     // overriding
-        public function hookModuleRoutes($params){
-        return [
-            'test' => [
-                'controller' => 'test',
-                'rule' => "fc-test",
-                'keywords' => [],
-                'params' => [
-                   'module' => $this->name,
-                    'fc' => 'module',
-                    'controller' => 'test'
-                ]
+    public function hookModuleRoutes($params){
+    return [
+        'test' => [
+            'controller' => 'test',
+            'rule' => "fc-test", // link fc-test
+            'keywords' => [],
+            'params' => [
+                'module' => $this->name,
+                'fc' => 'module',
+                'controller' => 'test'
             ]
-        ];
+        ]
+    ];
     }
+    protected function sqlInstall(){
+        $sqlCreate = "CREATE TABLE `" . _DB_PREFIX_ . "testcomment` (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `user_id` varchar(255) DEFAULT NULL,
+            `comment` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`id_sample`)
+            ) ENGINE = InnoDB DEFAULT CHARSET=latin1;";
+            return Db::getInstance()->execute($sqlCreate);
+
+            
+    }
+
+    protected function sqlUninstall(){
+        $sql = "DROP TABLE" . _DB_PREFIX_ . "testcomment";
+        return Db::getInstance()->execute($sql);
+    }
+
+    public function installtab(){
+        $tab = new Tab();
+        $tab->class_name = "AdminTest";
+        $tab->module = $this->name;
+        $tab->id_parent = (int) Tab::getIdFromClassName('DEFAULT');
+        $tab->icon = 'settings_applications';
+        $languages = Language::getLanguages();
+        foreach ($languages as $lang){
+            $tab->name[$lang['id_lang']] = $this->l('TEST Admin controller');
+        }
+        try{
+            $tab->save();
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    public function uninstalltab(){
+        $idTab = (int) Tab::getIdFromClassName('AdminTest');
+        if($idTab){
+            $tab = new Tab($idTab);
+            try{
+                $tab->delete();
+            }catch(Exception $e){
+                echo $e->getMessage();
+                return false;
+            }
+        }
+        return true;
+    }
+
 }// belongs to class
