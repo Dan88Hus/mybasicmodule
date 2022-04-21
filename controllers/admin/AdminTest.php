@@ -31,6 +31,15 @@ class AdminTestController extends ModuleAdminController{
         {
             $tplFile = dirname(__FILE__) . '/../../views/templates/admin/view.tpl';
             $tpl = $this->context->smarty->createTemplate($tplFile);
+            //fetch data from db
+            $sql = new DbQuery();
+            $sql->select('*')->from($this->table)->where('id', Tools::getValue('id'));
+            // echo diyerek ekrana yazdiriyor
+            $data = Db::getInstance()->executeS($sql);
+            // print_r($data); ekrana yazdiriyor echo gibi
+            $tpl->assign([
+                'data' => $data[0]
+            ]);
             return $tpl->fetch();
             // return 'Hello';
             // views/templates/admin/view.tpl e yonlendiriyoruz
