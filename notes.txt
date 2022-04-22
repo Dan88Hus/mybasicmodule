@@ -50,3 +50,4 @@ bu controlleri calistirak=cak routing file structure ise:
 mybasicmodule/config/routes.yml 
 arkasindan composer.json yapmamiz gerek ki auto loader olsun 
 mybasicmodule/composer.json 
+templating engine twig views/templates/admin/comment.html.twig
