@@ -44,3 +44,9 @@ postProcess
 legacy admin controller must be under modules/your_module/controllers/admin 
     main idea is to structure certain db table 
 
+for modern controller directory is : 
+src/controller/commentController.php (controllers degil, s yok ) - front controller 
+bu controlleri calistirak=cak routing file structure ise:
+mybasicmodule/config/routes.yml 
+arkasindan composer.json yapmamiz gerek ki auto loader olsun 
+mybasicmodule/composer.json 

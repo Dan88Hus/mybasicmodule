@@ -1,0 +1,5 @@
+blog_list:
+    path: /blog
+    # the controller value has the format 'controller_class::method_name'
+    controller: Mybasicmodule\Controller\CommentController::indexAction
+    # namespace controller dosyasindaki ve class name

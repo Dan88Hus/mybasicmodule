@@ -1,0 +1,13 @@
+{
+    "name": "huseyin/commentcontroller",
+    "description": "a controller that handle comment",
+    "autoload": {
+        "psr-4":{
+            "Mybasicmodule\\Controller\\": "src/controller/"
+        }
+    },
+    "config": {
+        "prepend-autoloader": false
+    },
+    "type": "prestashop-module"
+}
